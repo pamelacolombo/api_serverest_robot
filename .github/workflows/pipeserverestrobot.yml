@@ -19,7 +19,7 @@ jobs:
         run: |
           pip install robotframework
           pip install robotframework-requests
-          pip install robotframework-collections
+          pip install robotframework-seleniumlibrary
           
       - name: Run Robot Framework tests
         # run: echo Executando os testes de API do Robot
