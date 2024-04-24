@@ -10,7 +10,7 @@ Library  Collections
 *** Keywords ***
 Criar sessão
   ${headers}  Create Dictionary  accept=application/json  Content-Type=application/json
-  Create Session    alias=APIServerRest    url=https://serverest.dev                    headers=${headers}
+  Create Session    alias=APIServeRest    url=https://serverest.dev                    headers=${headers}
 
 Criar um novo usuário
   ${palavra_randomica}  Generate Random String  length=8  chars=[LETTERS]
@@ -22,13 +22,13 @@ Criar um novo usuário
   ${body}  Create Dictionary  nome=Fulano da Silva  email=${EMAIL_TEST}  password=teste  administrador=true
   Log  ${body}
   Criar sessão
-  ${resposta}  POST On Session  alias=APIServerRest  url=/usuarios  json=${body}  
+  ${resposta}  POST On Session  alias=APIServeRest  url=/usuarios  json=${body}  
   Log  ${resposta.json()}
   Set Test Variable    ${ID_USUARIO}  ${resposta.json()["_id"]}
   Set Test Variable    ${RESPOSTA}  ${resposta.json()}
 
 Consultar os dados do usuário
-  ${resposta_consulta}  GET On Session  alias=APIServerRest  url=/usuarios/${ID_USUARIO}  expected_status=200
+  ${resposta_consulta}  GET On Session  alias=APIServeRest  url=/usuarios/${ID_USUARIO}  expected_status=200
   Set Test Variable    ${RESPOSTA_CONSULTA}                  ${resposta_consulta.json()}
 
 Conferir os dados retornados do novo usuário
@@ -45,4 +45,11 @@ Conferir se este novo usuário foi cadastrado corretamente
   Dictionary Should Contain Key     ${RESPOSTA}    _id  
 
 Alterar perfil de acesso administrador de true para false
-  ${alterar_perfil_usuario}  PUT On Session  alias=APIServerRest  url=/usuarios/${ID_USUARIO}  expected_status=200  data={"nome":"Fulano da Silva", "email":"${EMAIL_TEST}","password":"teste","administrador":"false"}
+  ${alterar_perfil_usuario}  PUT On Session  alias=APIServeRest  url=/usuarios/${ID_USUARIO}  expected_status=200  data={"nome":"Fulano da Silva", "email":"${EMAIL_TEST}","password":"teste","administrador":"false"}
+
+Excluir usuário criado
+    ${excluir_usuario}  DELETE On Session  alias=APIServeRest  url=/usuarios/${ID_USUARIO}    expected_status=200  
+    Set Test Variable    ${RESPOSTA_APOS_EXCLUIR}    ${excluir_usuario.json}
+
+Conferir se o usuário foi excluído
+    Log  ${RESPOSTA_APOS_EXCLUIR}
