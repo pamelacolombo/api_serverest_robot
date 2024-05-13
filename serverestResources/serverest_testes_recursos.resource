@@ -71,10 +71,10 @@ Alterar perfil de acesso administrador de true para false
 
 Excluir usuário criado
   ${excluir_usuario}  DELETE On Session  alias=APIServeRest  url=/usuarios/${ID_USUARIO}    expected_status=200  
-  Set Test Variable    ${RESPOSTA_APOS_EXCLUIR}    ${excluir_usuario.json}
+  Set Test Variable    ${EXCLUIR_USUARIO}    ${excluir_usuario.json}
 
 Conferir se o usuário foi excluído
-  Log  ${RESPOSTA_APOS_EXCLUIR}
+  Log  ${EXCLUIR_USUARIO}
 
 Massa dados produto
   ${palavra_randomica_produto}  Generate Random String  length=8  chars=[LETTERS]
@@ -97,6 +97,13 @@ Verificar se o produto esta cadastrado com sucesso
   Log     ${RESPOSTA}  
    Dictionary Should Contain Item   ${RESPOSTA}      message    Cadastro realizado com sucesso
    Dictionary Should Contain Key    ${RESPOSTA}      _id
+
+Excluir produto criado
+  ${excluir_produto}  DELETE On Session  alias=APIServeRest  url=/produtos/${ID_USUARIO}    expected_status=200  
+  Set Test Variable    ${EXCLUIR_PRODUTO}    ${excluir_produto.json}
+
+Conferir se o produto foi excluído
+  Log  ${EXCLUIR_PRODUTO}
  
 Cadastro do carrinho
   Criar sessão usuário
@@ -106,7 +113,21 @@ Cadastro do carrinho
     Set Test Variable    ${ID_CARRINHO}    ${response.json()["_id"]}
     Set Test Variable    ${RESPOSTA}    ${response.json()}  
  
- Verificar se o carrinho foi cadastrado com sucesso
+Verificar se o carrinho foi cadastrado com sucesso
   Log     ${RESPOSTA}  
    Dictionary Should Contain Item   ${RESPOSTA}      message    Cadastro realizado com sucesso
    Dictionary Should Contain Key   ${RESPOSTA}      _id
+
+Excluir carrinho concluir compra
+  ${excluir_carrinho}  DELETE On Session  alias=APIServeRest  url=/carrinhos/concluir-compra    expected_status=200  
+  Set Test Variable    ${EXCLUIR_CARRINHO_CONCLUIDO}    ${excluir_carrinho.json}
+
+Conferir se o carrinho concluido foi excluído
+  Log  ${EXCLUIR_CARRINHO_CONCLUIDO}
+
+Excluir carrinho cancelar compra
+  ${excluir_carrinho}  DELETE On Session  alias=APIServeRest  url=/carrinhos/cancelar-compra    expected_status=200  
+  Set Test Variable    ${EXCLUIR_CARRINHO_CANCELADO}    ${excluir_carrinho.json}
+
+Conferir se o carrinho cancelado foi excluído
+  Log  ${EXCLUIR_CARRINHO_CANCELADO}

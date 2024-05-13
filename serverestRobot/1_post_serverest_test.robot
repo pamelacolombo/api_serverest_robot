@@ -25,7 +25,5 @@ Cenário com Post: Cadastrar carrinho
   Criar um novo usuário 
   Cadastrar o novo usuário criado
   Login com usuário cadastrado
-  Cadastrar novo produto
-  Verificar se o produto esta cadastrado com sucesso
   Cadastro do carrinho
   Verificar se o carrinho foi cadastrado com sucesso
